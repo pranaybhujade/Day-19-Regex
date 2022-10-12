@@ -1,32 +1,68 @@
 package com.bridgelabz;
 
-import java.util.Scanner;
+
+import java.util.regex.Pattern;
 
 public class Regex {
     public static void main(String[] args) {
-        UserRegistrationRegex regex=new UserRegistrationRegex();
-        Scanner scanner=new Scanner(System.in);
+        //        firstName or lastName starts with Cap and has minimum 3 characters
+        Pattern pattern=Pattern.compile("^[A-Z][a-zA-Z]{2,}");
+        boolean isValid = pattern.matcher(name).matches();
+        if (isValid){
+            System.out.println(name+" is valid");
+        }else
+            System.out.println(name+" is not valid");
+    }
+    public void validateEmail(String email){
+/*        E.g. abc.xyz@bl.co.in
+        Email has 3 mandatory parts (abc, bl & co) and 2 optional (xyz & in)
+        with precise @ and . positions
+ */
+        Pattern pattern=Pattern.compile("^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@([a-z]+)([.][a-z])*(\\.[a-z]+)$");
+        boolean isValid = pattern.matcher(email).matches();
+        if (isValid){
+            System.out.println("email is valid");
+        }else
+            System.out.println("email is not valid");
+    }
+    public void validateMobileNo(String mobileNo){
+        Pattern pattern=Pattern.compile("^[\\d]{2}\\s[\\d]{10}$");
+        boolean isValid = pattern.matcher(mobileNo).matches();
+        if (isValid){
+            System.out.println("mobile is valid");
+        }else {
+            System.out.println("mobile is not valid");
+        }
+    }
+    public void validatePassword(String password){
+        boolean isValid=true;
+        validatePassRule1(password);
+        validatePassRule2(password);
+    }
+    boolean validatePassRule1(String password){
+        //minimum 8 characters
+        Pattern pattern=Pattern.compile("[\\w]{8,}");
+        Pattern pattern=Pattern.compile("[\\S]{8,}");
+        Boolean isValid=pattern.matcher(password).matches();
+        if (isValid){
+            System.out.println("Rule1 Pass...");
+        }else {
+            System.out.println("Invalid Password! \nPassword must have minimum 8 characters");
+        }
+        return isValid;
+    }
 
-        System.out.println("Enter first name: ");
-        String firstName = scanner.next();
-        regex.validateName(firstName);
+    boolean validatePassRule2(String password){
+        //aAt least one upperCase letter
+        Pattern pattern=Pattern.compile("(?=.*[A-Z])[\\S]{8,}");
+        Boolean isValid=pattern.matcher(password).matches();
+        if (isValid){
+            System.out.println("Rule2 Pass...");
+        }else {
+            System.out.println("Invalid Password! \npassword must have at least one uppercase letter");
+        }
+        return isValid;
 
-        System.out.println("Enter last name: ");
-        String lastName = scanner.next();
-        regex.validateName(lastName);
-
-        System.out.println("Enter email: ");
-        String email = scanner.next();
-        regex.validateEmail(email);
-
-        System.out.println("Enter mobile no as per format: (e.g. 91 9867859848) ");
-        String mobileNo = scanner.nextLine();
-        regex.validateMobileNo(mobileNo);
-
-        System.out.println("\nPassword Rule1 – minimum 8 Characters");
-        System.out.println("Enter Password:");
-        String password = scanner.next();
-        regex.validatePassword(password);
 
 
         }
